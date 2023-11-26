@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Primary theme colors -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+
+    <!-- Ensure text is readable on the primary color -->
+    <item name="android:textColorPrimary">@android:color/white</item>
+    <item name="android:windowBackground">@android:color/white</item>
+</style>
+
+    <color name="colorAccent">#FF1100</color>
+    <color name="colorPrimaryDark">#133F3F</color>
+    <color name="colorPrimary">#0DA290</color>
+</resources>
