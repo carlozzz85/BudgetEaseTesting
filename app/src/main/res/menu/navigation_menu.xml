@@ -3,10 +3,11 @@
     <item
         android:id="@+id/navigation_expense_tracker"
         android:icon="@drawable/ic_expense_tracker"
-        android:title="@string/title_expense_tracker" />
+        android:title="@string/title_expense_tracker"
+        />
     <item
         android:id="@+id/navigation_budget_planner"
         android:icon="@drawable/ic_budget_planner"
         android:title="@string/title_budget_planner" />
-    <!-- Add other menu items here -->
+
 </menu>

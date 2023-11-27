@@ -16,8 +16,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,56 +29,58 @@ import java.util.ArrayList;
 public class ExpenseTrackerFragment extends Fragment {
 
     private static final String KEY_EXPENSE_CATEGORY = "Transaction";
-    private ListView listView;
     private ExpenseAdapter adapter;
-    private FloatingActionButton fabAddExpense;
-    private ArrayList<Expense> expenses;
     private DatabaseHelper dbHelper;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         dbHelper = new DatabaseHelper(context);
     }
-    String tableName = dbHelper.getExpensesTableName();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_expense_tracker, container, false);
 
-        listView = view.findViewById(R.id.expense_list_view);
-        fabAddExpense = view.findViewById(R.id.fab_add_expense);
-        expenses = new ArrayList<>();
+        ListView listView = view.findViewById(R.id.expense_list_view);
+        FloatingActionButton fabAddExpense = view.findViewById(R.id.fab_add_expense);
+        ArrayList<Expense> expenses = new ArrayList<>();
         adapter = new ExpenseAdapter(getContext(), expenses);
         listView.setAdapter(adapter);
+        FloatingActionButton fabClear = view.findViewById(R.id.fabClear);
 
-        fabAddExpense.setOnClickListener(new View.OnClickListener() {
+        fabClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddExpenseForm();
+                clearExpenses();
             }
         });
+
+        fabAddExpense.setOnClickListener(v -> openAddExpenseForm());
         fetchExpensesAndUpdateListView();
         return view;
     }
 
-    private void fetchExpensesAndUpdateListView() {
+    private void clearExpenses() {
+        dbHelper.clearAllExpenses();
+        updateListView();
+
+    }
+
+    void fetchExpensesAndUpdateListView() {
         ArrayList<Expense> expenses = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-
-
-        Cursor cursor = db.query(TABLE_EXPENSES, null, null, null, null, null, null);
+        Cursor cursor = db.query(DatabaseHelper.TABLE_EXPENSES, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") Expense expense = new Expense(
-                        cursor.getInt(cursor.getColumnIndex(KEY_EXPENSE_ID)),
-                        cursor.getDouble(cursor.getColumnIndex(KEY_EXPENSE_AMOUNT)),
-                        cursor.getString(cursor.getColumnIndex(KEY_EXPENSE_CATEGORY)),
-                        cursor.getString(cursor.getColumnIndex(KEY_EXPENSE_DATE)),
-                        cursor.getString(cursor.getColumnIndex(KEY_EXPENSE_NOTE))
+                        cursor.getInt(cursor.getColumnIndex(DatabaseHelper.KEY_EXPENSE_ID)),
+                        cursor.getDouble(cursor.getColumnIndex(DatabaseHelper.KEY_EXPENSE_AMOUNT)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_EXPENSE_CATEGORY)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_EXPENSE_DATE)),
+                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.KEY_EXPENSE_NOTE))
                 );
                 expenses.add(expense);
             } while (cursor.moveToNext());
@@ -94,15 +98,14 @@ public class ExpenseTrackerFragment extends Fragment {
         dialog.show(getChildFragmentManager(), "AddExpenseDialogFragment");
     }
 
-
     public void onExpenseAdded() {
-        updateListView(); // Update the list when an expense is added
+        updateListView();
     }
 
     public void updateListView() {
-        fetchExpensesAndUpdateListView(); // Assuming this method fetches data and updates the adapter
+        fetchExpensesAndUpdateListView();
     }
-
-
-
+    public void refreshExpenses() {
+        fetchExpensesAndUpdateListView();
+    }
 }

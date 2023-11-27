@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:text="Welcome to BudgetEase"
         android:textSize="22sp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:textColor="@android:color/black"/>
     <FrameLayout
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
@@ -24,8 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:menu="@menu/navigation_menu" />
+        app:menu="@menu/navigation_menu"
+        />
 
-    <!-- Add more UI elements here as needed -->
+
 
 </LinearLayout>

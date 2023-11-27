@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter monthly budget"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"
+        android:textColor="@android:color/black"/>
 
     <ProgressBar
         android:id="@+id/budgetProgressBar"
@@ -32,6 +33,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/saveBudgetButton"/>
 
-    <!-- Add other UI elements as needed -->
+
 
 </LinearLayout>

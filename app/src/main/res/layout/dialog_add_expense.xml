@@ -11,27 +11,31 @@
         android:layout_height="wrap_content"
         android:hint="Amount"
         android:inputType="numberDecimal"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:textColor="@android:color/black"/>
 
     <EditText
         android:id="@+id/editTextCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Category"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:textColor="@android:color/black"/>
 
     <EditText
         android:id="@+id/editTextDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Date (e.g., MM/dd/yyyy)"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:textColor="@android:color/black"/>
 
     <EditText
         android:id="@+id/editTextNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Note"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine"
+        android:textColor="@android:color/black"/>
 
 </LinearLayout>

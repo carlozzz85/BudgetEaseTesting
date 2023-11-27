@@ -12,10 +12,11 @@ import android.widget.EditText;
 import androidx.fragment.app.DialogFragment;
 
 public class AddExpenseDialogFragment extends DialogFragment {
-
+    DatabaseHelper dbHelper = new DatabaseHelper(getContext());
     // Define interface for updating the expense list in ExpenseTrackerFragment
     public interface OnExpenseAddedListener {
         void onExpenseAdded();
+
     }
 
     private OnExpenseAddedListener mListener;
@@ -23,7 +24,12 @@ public class AddExpenseDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (OnExpenseAddedListener) context; // Ensure parent Fragment implements this interface
+        if (context instanceof OnExpenseAddedListener) {
+            mListener = (OnExpenseAddedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnExpenseAddedListener");
+        }
     }
 
     @Override
@@ -59,7 +65,9 @@ public class AddExpenseDialogFragment extends DialogFragment {
                     }
                 });
 
+
         return builder.create();
     }
+
 }
 

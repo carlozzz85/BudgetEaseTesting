@@ -25,7 +25,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
 
         TextView tvAmount = convertView.findViewById(R.id.tvAmount);
         TextView tvCategory = convertView.findViewById(R.id.tvCategory);
-        // Set text for TextViews using expense data
+
         tvAmount.setText(String.valueOf(expense.getAmount()));
         tvCategory.setText(expense.getCategory());
 

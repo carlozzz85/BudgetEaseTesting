@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
     private static final String DATABASE_NAME = "budgetEaseDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Table Names
     public static final String TABLE_EXPENSES = "expenses";
@@ -53,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // SQL statement to create the budget table
         String CREATE_BUDGET_TABLE = "CREATE TABLE budget (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "amount DOUBLE" + ")";
+                "budget_amount DOUBLE" + ")";
 
         // Execute the SQL statements
         db.execSQL(CREATE_EXPENSES_TABLE);
@@ -62,9 +62,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This method is triggered if the DATABASE_VERSION is increased.
-        // For simplicity, we just drop the old table and create a new one.
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES);
+        db.execSQL("DROP TABLE IF EXISTS budget");
         onCreate(db);
     }
 
@@ -84,8 +84,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("budget_amount", budget);
 
-        // Assuming you have a 'budget' table with a 'budget_amount' column
-        db.insertWithOnConflict("budget", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        // Assuming there's a primary key (e.g., id = 1)
+        int id = 1; // The ID of the budget row you want to update
+        db.update("budget", values, "id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
@@ -181,8 +182,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return expense;
     }
 
+    public void clearAllExpenses() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EXPENSES, null, null);
+        db.close();
+    }
 
-
-    // CRUD operations (create, read, update, delete) go here...
 }
 

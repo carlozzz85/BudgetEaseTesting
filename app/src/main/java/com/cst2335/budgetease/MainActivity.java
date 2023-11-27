@@ -5,36 +5,23 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.view.MenuItem;
-// other imports
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+public class MainActivity extends AppCompatActivity implements AddExpenseDialogFragment.OnExpenseAddedListener {
 
-public class MainActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @SuppressLint("NonConstantResourceId")
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment fragment;
-            int id = item.getItemId();
-            if (id == R.id.navigation_expense_tracker) {
-                fragment = new ExpenseTrackerFragment();
-                loadFragment(fragment);
-                return true;
-            } else if (id == R.id.navigation_budget_planner) {
-                fragment = new BudgetPlannerFragment();
-                loadFragment(fragment);
-                return true;
-                // Handle other cases
-            }
-            return false;
+            = item -> {
+        Fragment fragment = null;
+        int id = item.getItemId();
+        if (id == R.id.navigation_expense_tracker) {
+            fragment = new ExpenseTrackerFragment();
+        } else if (id == R.id.navigation_budget_planner) {
+            fragment = new BudgetPlannerFragment();
         }
+        return loadFragment(fragment);
     };
 
     @Override
@@ -49,11 +36,23 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(new ExpenseTrackerFragment());
     }
 
-    private void loadFragment(Fragment fragment) {
-        // load fragment logic here
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_container, fragment)
-                .commit();
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_container, fragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onExpenseAdded() {
+        ExpenseTrackerFragment fragment = (ExpenseTrackerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.navigation_expense_tracker);
+        if (fragment != null) {
+            fragment.updateListView();
+        }
     }
 }
-
