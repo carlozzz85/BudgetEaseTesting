@@ -2,4 +2,5 @@
 <resources>
     <string name="title_budget_planner">Budget Planner</string>
     <string name="title_expense_tracker">Expense Tracker</string>
+    <string name="welcome_to_budgetease">Welcome to BudgetEase</string>
 </resources>
