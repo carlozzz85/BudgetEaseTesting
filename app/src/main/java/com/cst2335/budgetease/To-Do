@@ -2,7 +2,7 @@ To-Do List:
 -Implement a main menu that directs user to BudgetPlanner, or ExpensetTracker (replace the navigation menu and current bottomNavigationView).
 -Get the notifications to work and implement a class that generates 3 random messages for each notification scenario (50%, 75% and 90%).
 -Redesign the style and layouts for each screen.
--Get to use the ChatGPT API in a test in order to be implemented in the notificationCenter.
+-Get to use the ChatGPT API in a test in order to be implemented in the notificationCenter. (Carlos H)
 -Implement algorithm to add taxes to each expense if the user requieres to (add a checkbutton on the dialog_add_expense.xml) refer to that checkbox to add or not add the tax.
 
 
