@@ -4,3 +4,7 @@ To-Do List:
 -Redesign the style and layouts for each screen.
 -Get to use the ChatGPT API in a test in order to be implemented in the notificationCenter.
 -Implement algorithm to add taxes to each expense if the user requieres to (add a checkbutton on the dialog_add_expense.xml) refer to that checkbox to add or not add the tax.
+
+
+
+Feel free to use space under your To-Do to ask for help, notify progress, or notify any obstacle.
