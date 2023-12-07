@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
     private static final String DATABASE_NAME = "budgetEaseDatabase";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 6;
 
     // Table Names
     public static final String TABLE_EXPENSES = "expenses";
@@ -28,10 +28,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String KEY_EXPENSE_CATEGORY = "category";
     public static final String KEY_EXPENSE_DATE = "date";
     public static final String KEY_EXPENSE_NOTE = "note";
+    private static DatabaseHelper instance;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
+
+
     public String getExpensesTableName() {
         return TABLE_EXPENSES;
     }
@@ -40,9 +44,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // SQL statement to create the expenses table
+
         String CREATE_EXPENSES_TABLE = "CREATE TABLE expenses (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "amount DOUBLE," +
@@ -50,12 +61,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date TEXT," +
                 "note TEXT" + ")";
 
-        // SQL statement to create the budget table
+
         String CREATE_BUDGET_TABLE = "CREATE TABLE budget (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "budget_amount DOUBLE" + ")";
 
-        // Execute the SQL statements
+
         db.execSQL(CREATE_EXPENSES_TABLE);
         db.execSQL(CREATE_BUDGET_TABLE);
     }
@@ -84,11 +95,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("budget_amount", budget);
 
-        // Assuming there's a primary key (e.g., id = 1)
-        int id = 1; // The ID of the budget row you want to update
-        db.update("budget", values, "id = ?", new String[]{String.valueOf(id)});
+
+        Cursor cursor = db.query("budget", new String[]{"id"}, null, null, null, null, null);
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+
+        if (exists) {
+
+            db.update("budget", values, "id = ?", new String[]{"1"}); // Assuming the budget ID is always 1
+        } else {
+
+            db.insert("budget", null, values);
+        }
         db.close();
     }
+
 
     @SuppressLint("Range")
     public double getBudget() {
@@ -128,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_EXPENSE_DATE, expense.getDate());
         values.put(KEY_EXPENSE_NOTE, expense.getNote());
 
-        // updating row
+
         return db.update(TABLE_EXPENSES, values, KEY_EXPENSE_ID + " = ?",
                 new String[]{String.valueOf(expense.getId())});
     }

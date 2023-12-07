@@ -3,4 +3,9 @@
     <string name="title_budget_planner">Budget Planner</string>
     <string name="title_expense_tracker">Expense Tracker</string>
     <string name="welcome_to_budgetease">Welcome to BudgetEase</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="channel_name">BudgetEase Notification</string>
+    <string name="channel_description">Notifications for BudgetEase App</string>
+    <string name="channel_id">budgetease_channel_01</string>
 </resources>
