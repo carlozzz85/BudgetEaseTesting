@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,7 @@ public class ExpenseTrackerFragment extends Fragment {
     private ExpenseAdapter adapter;
     private DatabaseHelper dbHelper;
     private FloatingActionButton fabAddExpense, fabClear;
-
+    private ProgressBar expenseProgressBar;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -34,10 +35,19 @@ public class ExpenseTrackerFragment extends Fragment {
         initViews(view);
         setupListView();
         setupFloatingActionButtons();
+        expenseProgressBar = view.findViewById(R.id.expenseProgressBar);
+        updateProgressBar();
 
         return view;
     }
+    private void updateProgressBar() {
 
+        double budget = dbHelper.getBudget();
+        double expenses = dbHelper.getTotalExpenses();
+        int progress = budget != 0 ? (int) ((expenses / budget) * 100) : 0;
+
+        expenseProgressBar.setProgress(progress);
+    }
     private void initViews(View view) {
         listView = view.findViewById(R.id.expense_list_view);
         fabAddExpense = view.findViewById(R.id.fab_add_expense);

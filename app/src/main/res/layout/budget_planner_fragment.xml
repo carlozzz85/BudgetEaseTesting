@@ -5,13 +5,18 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editTextBudget"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter monthly budget"
-        android:inputType="numberDecimal"
-        android:textColor="@android:color/black"/>
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="Enter monthly budget">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextBudget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ProgressBar
         android:id="@+id/budgetProgressBar"
@@ -19,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="100"
-        android:progress="50" />
+        android:progress="50"
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/textViewBudgetInfo"
@@ -28,11 +34,12 @@
         android:text="Budget Usage Information"
         android:paddingTop="8dp"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveBudgetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/saveBudgetButton"/>
-
-
-
+        android:text="Save Budget"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

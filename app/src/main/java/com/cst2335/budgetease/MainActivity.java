@@ -2,6 +2,7 @@ package com.cst2335.budgetease;
 
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
@@ -16,19 +17,8 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements AddExpenseDialogFragment.OnExpenseAddedListener {
     private DrawerLayout drawerLayout;
-    private void createNotificationChannel() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(getString(R.string.channel_id), name, importance);
-            channel.setDescription(description);
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements AddExpenseDialogF
                 fragment = new ExpenseTrackerFragment();
             } else if (id == R.id.navigation_budget_planner) {
                 fragment = new BudgetPlannerFragment();
+            }else if (id == R.id.nav_info) {
+                showDeveloperInfo();
             }
 
             if (fragment != null) {
@@ -74,7 +66,13 @@ public class MainActivity extends AppCompatActivity implements AddExpenseDialogF
             return true;
         });
     }
-
+    private void showDeveloperInfo() {
+        new AlertDialog.Builder(this)
+                .setTitle("Development Team Info")
+                .setMessage("Names: \nCarlos Herrera\nXinghua Wang\nPanqi Teng\nQingyi Zhang")
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .show();
+    }
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

@@ -1,7 +1,12 @@
 package com.cst2335.budgetease;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -104,39 +109,43 @@ public class BudgetPlannerFragment extends Fragment {
         checkAndSendNotification(budgetUsage);
     }
 
-    private void checkAndSendNotification(double budgetUsage) {
-        String title = "Budget Alert";
-        String message = "";
+    private void checkAndSendNotification(double budgetUsagePercentage) {
+        SharedPreferences prefs = getActivity().getSharedPreferences("BudgetPrefs", Context.MODE_PRIVATE);
+        boolean is50Notified = prefs.getBoolean("is50Notified", false);
+        boolean is75Notified = prefs.getBoolean("is75Notified", false);
+        boolean is90Notified = prefs.getBoolean("is90Notified", false);
 
-        if (budgetUsage > 100) {
-            message = "You have exceeded your budget limit!";
-        } else if (budgetUsage >= 95) {
-            message = "Warning: You are about to reach your budget limit!";
-        } else if (budgetUsage >= 75) {
-            message = "Alert: You have used 75% of your budget.";
-        } else if (budgetUsage >= 50) {
-            message = "Notice: You have used half of your budget.";
-        }
-
-        if (!message.isEmpty()) {
-            sendNotification(title, message);
+        if (budgetUsagePercentage >= 50 && !is50Notified) {
+            sendBudgetNotification("50% of your budget is used.");
+            prefs.edit().putBoolean("is50Notified", true).apply();
+        } else if (budgetUsagePercentage >= 75 && !is75Notified) {
+            sendBudgetNotification("75% of your budget is used.");
+            prefs.edit().putBoolean("is75Notified", true).apply();
+        } else if (budgetUsagePercentage >= 90 && !is90Notified) {
+            sendBudgetNotification("Careful! 90% of your budget is used.");
+            prefs.edit().putBoolean("is90Notified", true).apply();
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private void sendNotification(String title, String message) {
-        if (!areNotificationsEnabled()) {
-            return;
+    private void sendBudgetNotification(String message) {
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "budget_channel_id";
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Budget Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("BudgetEase Channel");
+            notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), getString(R.string.channel_id))
-                .setSmallIcon(R.drawable.ic_add)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);
+        notificationBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Budget Alert")
+                .setContentText(message);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
-        notificationManager.notify(getUniqueNotificationId(), builder.build());
+        notificationManager.notify(1001, notificationBuilder.build());
     }
 
     private boolean areNotificationsEnabled() {

@@ -4,10 +4,17 @@
         android:id="@+id/navigation_expense_tracker"
         android:icon="@drawable/ic_expense_tracker"
         android:title="@string/title_expense_tracker"
+        android:tooltipText="Expense Tracker"
         />
     <item
         android:id="@+id/navigation_budget_planner"
         android:icon="@drawable/ic_budget_planner"
-        android:title="@string/title_budget_planner" />
+        android:title="@string/title_budget_planner"
+        android:tooltipText="Budget Planner"/>
+
+    <item
+        android:id="@+id/nav_info"
+        android:icon="@drawable/baseline_info_24"
+    android:title="Info" />
 
 </menu>
