@@ -3,9 +3,7 @@ package com.cst2335.budgetease;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
+
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +15,6 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements AddExpenseDialogFragment.OnExpenseAddedListener {
     private DrawerLayout drawerLayout;
-
 
 
     @Override
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements AddExpenseDialogF
                 fragment = new ExpenseTrackerFragment();
             } else if (id == R.id.navigation_budget_planner) {
                 fragment = new BudgetPlannerFragment();
-            }else if (id == R.id.nav_info) {
+            } else if (id == R.id.nav_info) {
                 showDeveloperInfo();
             }
 
@@ -66,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements AddExpenseDialogF
             return true;
         });
     }
+
     private void showDeveloperInfo() {
         new AlertDialog.Builder(this)
                 .setTitle("Development Team Info")
@@ -73,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements AddExpenseDialogF
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .show();
     }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -88,7 +87,13 @@ public class MainActivity extends AppCompatActivity implements AddExpenseDialogF
                 .findFragmentById(R.id.navigation_expense_tracker);
         if (fragment != null) {
             fragment.updateListView();
-        }
-    }
+        } else {
 
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_container, new ExpenseTrackerFragment())
+                    .commit();
+
+        }
+
+    }
 }

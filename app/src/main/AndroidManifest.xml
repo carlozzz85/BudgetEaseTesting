@@ -27,8 +27,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Other activities declarations go here -->
-        <!-- Example: <activity android:name=".OtherActivity" /> -->
+
 
     </application>
 
