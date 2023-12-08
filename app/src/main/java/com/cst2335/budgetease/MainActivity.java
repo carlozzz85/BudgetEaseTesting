@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AddExpenseDialogF
     private void showDeveloperInfo() {
         new AlertDialog.Builder(this)
                 .setTitle("Development Team Info")
-                .setMessage("Names: \nCarlos Herrera\nXinghua Wang\nPanqi Teng\nQingyi Zhang")
+                .setMessage("Names: \nCarlos Herrera\nXinghua Wang\nPanqi Teng\nQingyi Zhang\nZhile Wu")
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .show();
     }
